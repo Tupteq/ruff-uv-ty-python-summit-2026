@@ -9,7 +9,7 @@ Materiały do wystąpienia „Ruff, uv i ty” (Python Summit, Warszawa, 20.10.2
 
 ```sh
 uvx ruff check --statistics                 # domyślne reguły, bez instalowania czegokolwiek
-uvx ruff check --select ALL --statistics    # wszystkie 954 reguły, dla ciekawych
+uvx ruff check --select ALL --statistics    # 815 stabilnych reguł; z --preview wszystkie 954
 ```
 
 `uvx` uruchamia narzędzie w osobnym, tymczasowym środowisku — nic nie dotyka Twojego projektu.
@@ -67,7 +67,7 @@ requires-python = ">=3.12"
 dependencies = ["httpx"]
 
 [dependency-groups]
-dev = ["ruff==0.17.1", "ty==0.0.89"]
+dev = ["ruff==0.17.1", "ty==0.0.89", "pytest"]
 
 [tool.uv]
 # starszy uv odmówi pracy
@@ -96,9 +96,9 @@ def test_total():
 
 ## To samo sprawdzenie w trzech miejscach
 
-**Edytor.** PyCharm 2025.3+ ma uv, Ruffa i ty wbudowane; VS Code: rozszerzenia Ruff i ty (oba działają jako language server).
+**Edytor.** PyCharm 2025.3+ ma natywną integrację z uv, Ruffem i ty; VS Code: rozszerzenia Ruff i ty (oba działają jako language server).
 
-**Commit.** Hook uruchamiany przez `uv run`, więc wersja Ruffa pochodzi z `uv.lock` (`.pre-commit-config.yaml`, instalacja: `uvx pre-commit install`):
+**Commit.** Hook uruchamiany przez `uv run`, więc wersja Ruffa pochodzi z `uv.lock` (`.pre-commit-config.yaml`, instalacja: `uv tool install pre-commit && pre-commit install`):
 
 ```yaml
 repos:
@@ -129,7 +129,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v9.0.0
+      - uses: astral-sh/setup-uv@v10.3.0
         with:
           enable-cache: true
       - run: uv sync --locked
